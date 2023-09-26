@@ -3,8 +3,21 @@ run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: [push]
 jobs:
   Explore-GitHub-Actions:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
+      - name: Create Folders
+        run: |
+          mkdir -p build/artifacts
+      - name: Create XCFramework
+        uses: unsignedapps/swift-create-xcframework@v2
+      - name: Upload
+        if: always()
+        uses: actions/upload-artifact@v2
+        with: 
+          name: artifacts
+          path: |
+            build/artifacts/*
+            build/**/*.ipa
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
